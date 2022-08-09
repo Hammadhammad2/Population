@@ -16,9 +16,6 @@ const resolvers = {
         throw new Error("User Already Exists");
       }
 
-      if (password !== confirmpassword) {
-        throw new Error("Invalid Password");
-      }
       const hashedPassword = await bcrypt.hash(password, 12);
       const result = await User.create({
         name,
@@ -29,8 +26,10 @@ const resolvers = {
       console.log("User created", result);
       return result;
     },
-    signInUser: async (_, { newSignInUser }) => {
+    SigninUser: async (_, { newSignInUser }) => {
       const { email, password } = newSignInUser;
+
+      console.log(email,password)
 
       const oldUser = await User.findOne({ email: email });
       if (!oldUser) {

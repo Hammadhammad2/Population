@@ -4,7 +4,9 @@ import mongoose from "mongoose";
 import resolvers from "./resolvers.js";
 import typeDefs from "./schema.js";
 import jwt from "jsonwebtoken";
+import dbConnection from "./config/dbConnection.js";
 const secret = "test";
+
 const context = ({ req }) => {
   const { authorization } = req.headers;
   if (authorization) {
@@ -12,18 +14,7 @@ const context = ({ req }) => {
     return { id };
   }
 };
-import { MONGO_URL } from "./config.js";
-mongoose
-  .connect(MONGO_URL, {
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("DATABASE CONNECTED");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-
+dbConnection;
 const server = new ApolloServer({
   typeDefs,
   resolvers,
