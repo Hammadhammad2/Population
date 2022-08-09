@@ -11,7 +11,7 @@ const typeDefs = gql`
 
   type Mutation {
     signUpUser(newUser: UserInput): User
-    signInUser(newSignInUser: UserSignINInput): Token
+    SigninUser(newSignInUser: UserSigninInput): Token
   }
 
   type User {
@@ -30,11 +30,13 @@ const typeDefs = gql`
     confirmpassword: String
   }
 
-  input UserSignINInput {
+  input UserSigninInput{
     email: String!
 
     password: String!
   }
+
+  input 
 
   type Quote {
     name: String
