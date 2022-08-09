@@ -36,7 +36,7 @@ const typeDefs = gql`
     password: String!
   }
 
-  input 
+  
 
   type Quote {
     name: String
