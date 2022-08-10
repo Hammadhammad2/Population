@@ -12,6 +12,7 @@ const typeDefs = gql`
   type Mutation {
     signUpUser(newUser: UserInput): User
     SigninUser(newSignInUser: UserSigninInput): Token
+    addCity(newCity: CityInput): City
   }
 
   type User {
@@ -30,17 +31,26 @@ const typeDefs = gql`
     confirmpassword: String
   }
 
-  input UserSigninInput{
+  input UserSigninInput {
     email: String!
-
     password: String!
   }
 
-  
+  type City {
+    _id: ID
+    id: String
+    label: String
+    lat: Float
+    lon: Float
+    placeId: String
+  }
 
-  type Quote {
-    name: String
-    by: ID
+  input CityInput {
+    userId: String
+    label: String
+    lat: Float
+    lon: Float
+    placeId: String
   }
 `;
 export default typeDefs;
