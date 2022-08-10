@@ -9,12 +9,16 @@ const secret = "test";
 
 const context = ({ req }) => {
   const { authorization } = req.headers;
+
   if (authorization) {
     const { id } = jwt.verify(authorization, secret);
+    console.log(id);
     return { id };
   }
 };
+
 dbConnection;
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,

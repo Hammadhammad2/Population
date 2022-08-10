@@ -1,7 +1,8 @@
-import mongoose from "mongoose";
 import User from "./models/user.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import City from "./models/City.js";
+
 const secret = "test";
 const resolvers = {
   Query: {
@@ -29,26 +30,93 @@ const resolvers = {
     SigninUser: async (_, { newSignInUser }) => {
       const { email, password } = newSignInUser;
 
-      console.log(email,password)
+      console.log(email, password);
 
-      const oldUser = await User.findOne({ email: email });
-      if (!oldUser) {
+      const user = await User.findOne({ email: email });
+      if (!user) {
         throw new Error("User does not Exists");
       }
 
-      const isPasswordCorrect = await bcrypt.compare(
-        password,
-        oldUser.password
-      );
+      const isPasswordCorrect = await bcrypt.compare(password, user.password);
       if (!isPasswordCorrect) {
         throw new Error("Invalid Password");
       }
 
-      const token = jwt.sign({ id: oldUser._id }, secret, {
+      const token = jwt.sign({ email: user.email, id: user._id }, secret, {
         expiresIn: "2h",
       });
       console.log("Sign in Successful", token);
       return { token };
+    },
+
+    addCity: async (_, { newCity }, { id }) => {
+      if (!id) {
+        throw new Error("Your are not authorized to perform this action");
+      }
+
+      //checkCity validation
+
+      async function checkCity(newCity) {
+        const old = await City.findOne({
+          placeId: newCity.placeId,
+          userId: newCity._id,
+        });
+
+        if (old) {
+          return false;
+        } else {
+          return true;
+        }
+      }
+
+      //insertCity in db
+      async function insertCity(newCity) {
+        const result = await City.create(newCity);
+        return result;
+      }
+
+      if (Array.isArray(newCity)) {
+        var notAddedCities = [];
+        var cities = newCity;
+        await Promise.all(
+          cities.map(async (newCity) => {
+            await checkCity(newCity).then((resp) => {
+              if (resp) {
+                insertCity(newCity);
+              } else {
+                notAddedCities.push(newCity);
+              }
+            });
+          })
+        );
+
+        //already added cities handler
+
+        if (notAddedCities.length > 0) {
+          return { notAddedCities, message: "Some Cities not added" };
+        } else {
+          return { message: "All cities added" };
+        }
+      } else {
+        //add city to db
+
+        const city = newCity;
+        return checkCity(city).then((resp) => {
+          if (resp) {
+            insertCity(city)
+              .then((result) => {
+                console.log("newResponse====", result);
+                return result;
+              })
+              .catch((err) => {
+                console.log(err);
+                throw new Error("Some Thing went Wrong");
+              });
+          } else {
+            throw new Error(" CITY ALREADY EXISTS");
+          }
+        });
+      }
     },
   },
 };
