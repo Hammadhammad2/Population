@@ -7,6 +7,7 @@ const typeDefs = gql`
 
   type Token {
     token: String
+    userId: ID
   }
 
   type Mutation {
@@ -16,7 +17,6 @@ const typeDefs = gql`
   }
 
   type User {
-    _id: ID
     name: String
     email: String!
     phoneno: String
@@ -38,7 +38,7 @@ const typeDefs = gql`
 
   type City {
     _id: ID
-    id: String
+    userId: String
     label: String
     lat: Float
     lon: Float

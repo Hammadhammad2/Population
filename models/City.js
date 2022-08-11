@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 const citySchema = mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  userId: String,
   id: String,
   label: String,
   lat: Number,

@@ -10,7 +10,7 @@ const resolvers = {
   },
   Mutation: {
     signUpUser: async (_, { newUser }) => {
-      const { name, email, phoneno, password, confirmpassword } = newUser;
+      const { name, email, phoneno, password } = newUser;
 
       const oldUser = await User.findOne({ email });
       if (oldUser) {
@@ -30,9 +30,10 @@ const resolvers = {
     SigninUser: async (_, { newSignInUser }) => {
       const { email, password } = newSignInUser;
 
-      console.log(email, password);
+      //console.log(email, password);
 
       const user = await User.findOne({ email: email });
+      console.log(user);
       if (!user) {
         throw new Error("User does not Exists");
       }
@@ -42,24 +43,25 @@ const resolvers = {
         throw new Error("Invalid Password");
       }
 
+      const userId = user._id;
       const token = jwt.sign({ email: user.email, id: user._id }, secret, {
-        expiresIn: "2h",
+        expiresIn: "120s",
       });
       console.log("Sign in Successful", token);
-      return { token };
+      return { userId, token };
     },
 
     addCity: async (_, { newCity }, { id }) => {
-      if (!id) {
-        throw new Error("Your are not authorized to perform this action");
-      }
+      // if (!id) {
+      //   throw new Error("Your are not authorized to perform this action");
+      // }
 
       //checkCity validation
 
       async function checkCity(newCity) {
         const old = await City.findOne({
           placeId: newCity.placeId,
-          userId: newCity._id,
+          userId: newCity.userId,
         });
 
         if (old) {
