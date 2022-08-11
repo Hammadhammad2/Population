@@ -7,6 +7,12 @@ const secret = "test";
 const resolvers = {
   Query: {
     users: async () => await User.find({}),
+    getcities: async (_, { userID }) => {
+      console.log(userID);
+      const result = await City.find({ userId: userID });
+
+      return result;
+    },
   },
   Mutation: {
     signUpUser: async (_, { newUser }) => {
@@ -45,16 +51,16 @@ const resolvers = {
 
       const userId = user._id;
       const token = jwt.sign({ email: user.email, id: user._id }, secret, {
-        expiresIn: "120s",
+        expiresIn: "2h",
       });
       console.log("Sign in Successful", token);
       return { userId, token };
     },
 
     addCity: async (_, { newCity }, { id }) => {
-      // if (!id) {
-      //   throw new Error("Your are not authorized to perform this action");
-      // }
+      if (!id) {
+        throw new Error("Your are not authorized to perform this action");
+      }
 
       //checkCity validation
 
@@ -120,6 +126,13 @@ const resolvers = {
           }
         });
       }
+    },
+    deleteCities: async (_, { cityId }) => {
+      console.log(cityId);
+
+      const result = await City.findByIdAndRemove(cityId);
+
+      return result;
     },
   },
 };
