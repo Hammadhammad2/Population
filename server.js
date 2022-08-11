@@ -1,6 +1,6 @@
 import { ApolloServer, gql } from "apollo-server";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
-import mongoose from "mongoose";
+import jwt_decode from "jwt-decode";
 import resolvers from "./resolvers.js";
 import typeDefs from "./schema.js";
 import jwt from "jsonwebtoken";
@@ -12,7 +12,7 @@ const context = ({ req }) => {
 
   if (authorization) {
     const { id } = jwt.verify(authorization, secret);
-    console.log(id);
+
     return { id };
   }
 };
