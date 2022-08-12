@@ -64,7 +64,7 @@ const resolvers = {
 
       //checkCity validation
 
-      console.log(newCity.userId);
+      console.log(newCity);
       async function checkCity(newCity) {
         const old = await City.findOne({
           placeId: newCity.placeId,

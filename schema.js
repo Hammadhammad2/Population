@@ -15,7 +15,7 @@ const typeDefs = gql`
     signUpUser(newUser: UserInput): User
     SigninUser(newSignInUser: UserSigninInput): Token
     addCity(newCity: CityInput): City
-    deleteCities(cityId: ID): City
+    deleteCities(cityId: String): City
   }
 
   type User {
