@@ -84,31 +84,6 @@ const resolvers = {
         return result;
       }
 
-      if (Array.isArray(newCity)) {
-        var notAddedCities = [];
-        var cities = newCity;
-        await Promise.all(
-          cities.map(async (newCity) => {
-            await checkCity(newCity).then((resp) => {
-              if (resp) {
-                insertCity(newCity);
-              } else {
-                notAddedCities.push(newCity);
-              }
-            });
-          })
-        );
-
-        //already added cities handler
-
-        if (notAddedCities.length > 0) {
-          return { notAddedCities, message: "Some Cities not added" };
-        } else {
-          return { message: "All cities added" };
-        }
-      } else {
-        //add city to db
-
         const city = newCity;
         return checkCity(city).then((resp) => {
           if (resp) {
@@ -125,7 +100,7 @@ const resolvers = {
             throw new Error(" CITY ALREADY EXISTS");
           }
         });
-      }
+      
     },
     deleteCities: async (_, { cityId }) => {
       console.log(cityId);

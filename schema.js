@@ -42,16 +42,16 @@ const typeDefs = gql`
     _id: ID
     userId: String
     label: String
-    lat: Float
-    lon: Float
+    lat: String
+    lon: String
     placeId: String
   }
 
   input CityInput {
     userId: String
     label: String
-    lat: Float
-    lon: Float
+    lat: String
+    lon: String
     placeId: String
   }
 `;
