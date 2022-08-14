@@ -3,8 +3,8 @@ const citySchema = mongoose.Schema({
   userId: String,
   id: String,
   label: String,
-  lat: Number,
-  lon: Number,
+  lat: String,
+  lon: String,
   placeId: String,
 });
 
