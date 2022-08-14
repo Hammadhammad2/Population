@@ -62,47 +62,22 @@ const resolvers = {
         throw new Error("Your are not authorized to perform this action");
       }
 
-      //checkCity validation
-
-      console.log(newCity);
-      async function checkCity(newCity) {
         const old = await City.findOne({
-          placeId: newCity.placeId,
-          userId: newCity.userId,
-        });
+        placeId: newCity.placeId,
+        userId: newCity.userId,
+      });
 
-        if (old) {
-          return false;
-        } else {
-          return true;
-        }
-      }
+    ;
 
-      //insertCity in db
-      async function insertCity(newCity) {
+      if (old) {
+        throw new Error(" CITY ALREADY EXISTS");
+      } else {
         const result = await City.create(newCity);
         return result;
       }
-
-        const city = newCity;
-        return checkCity(city).then((resp) => {
-          if (resp) {
-            insertCity(city)
-              .then((result) => {
-                console.log("newResponse====", result);
-                return result;
-              })
-              .catch((err) => {
-                console.log(err);
-                throw new Error("Some Thing went Wrong");
-              });
-          } else {
-            throw new Error(" CITY ALREADY EXISTS");
-          }
-        });
-      
     },
     deleteCities: async (_, { cityId }) => {
+     
       console.log(cityId);
 
       const result = await City.findByIdAndRemove(cityId);
