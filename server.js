@@ -1,8 +1,8 @@
 import { ApolloServer, gql } from "apollo-server";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 import jwt_decode from "jwt-decode";
-import resolvers from "./resolvers.js";
-import typeDefs from "./schema.js";
+import resolvers from "./resolvers/resolvers.js";
+import typeDefs from "./schema/schema.js";
 import jwt from "jsonwebtoken";
 import dbConnection from "./config/dbConnection.js";
 const secret = "test";
