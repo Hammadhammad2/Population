@@ -1,6 +1,6 @@
 import { ApolloServer, gql } from "apollo-server";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
-import jwt_decode from "jwt-decode";
+
 import resolvers from "./resolvers/resolvers.js";
 import typeDefs from "./schema/schema.js";
 import jwt from "jsonwebtoken";
@@ -9,11 +9,19 @@ const secret = "test";
 
 const context = ({ req }) => {
   const { authorization } = req.headers;
+  console.log(authorization);
+  try {
+    const token = authorization;
 
-  if (authorization) {
-    const { id } = jwt.verify(authorization, secret);
+    console.log(token);
 
-    return { id };
+    if (token) {
+      const { id } = jwt.verify(token, secret);
+      console.log(id);
+      return { id };
+    }
+  } catch (error) {
+    throw new Error("Sorry! You are not authorized to access this page");
   }
 };
 
