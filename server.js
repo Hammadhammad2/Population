@@ -13,8 +13,6 @@ const context = ({ req }) => {
   try {
     const token = authorization;
 
-    console.log(token);
-
     if (token) {
       const { id } = jwt.verify(token, secret);
       console.log(id);
